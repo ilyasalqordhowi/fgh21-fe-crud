@@ -33,21 +33,22 @@ function Tabel() {
     const response = await fetch("http://localhost:8888/users/" + id, {
       method: "DELETE",
     });
+
     const json = await response.json();
     window.alert("terhapus");
     setData(json.results);
   }
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="flex flex-col gap-[10px] w-[375px] p-[10px]">
-        <div className="flex bg-blue-400 p-[10px] rounded-md justify-center">
-          <Link to="/create">
+      <div className="flex flex-col gap-[10px] h-screen w-[500px] p-[10px]">
+        <Link to="/create">
+          <div className="flex bg-blue-400 p-[10px] w-full rounded-md justify-center">
             <button className="flex gap-[10px]  items-center">
-              <FaPlus />
-              <h1>Create data</h1>
+              <FaPlus className="text-white" />
+              <h1 className="text-white">Create data</h1>
             </button>
-          </Link>
-        </div>
+          </div>
+        </Link>
         <table border={1}>
           <thead>
             <tr className="border">
@@ -61,7 +62,7 @@ function Tabel() {
           <tbody>
             {data.map((items) => {
               return (
-                <tr>
+                <tr key={items.id}>
                   <td className="border border-black p-[10px]">{items.id}</td>
                   <td className="border border-black p-[10px]">{items.name}</td>
                   <td className="border border-black p-[10px]">
@@ -73,7 +74,7 @@ function Tabel() {
                     </button>
                   </td>
                   <td className="border border-black p-[10px]">
-                    <Link to={`/edit/${items.id}`}>
+                    <Link to={"/edit/" + items.id}>
                       <button>
                         <FaPenToSquare />
                       </button>
