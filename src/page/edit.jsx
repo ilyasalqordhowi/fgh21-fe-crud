@@ -11,7 +11,7 @@ function Edit() {
   console.log(id);
   const [edit, setEdit] = React.useState([
     {
-      name: "",
+      username: "",
       email: "",
     },
   ]);
@@ -23,27 +23,27 @@ function Edit() {
       setPass("password");
     }
   }
+  async function update() {
+    const response = await fetch("http://localhost:8888/users/" + id);
+    console.log(response);
+    const json = await response.json();
+    setEdit(json.results);
+    console.log(edit);
+  }
   useEffect(() => {
-    async function update() {
-      const response = await fetch("http://localhost:8888/users" + "/" + id);
-      console.log(response);
-      const json = await response.json();
-      setEdit(json.results);
-      console.log(edit);
-    }
     update();
   }, []);
 
   const formik = useFormik({
     onSubmit: dataUpdate(),
     initialValues: {
-      fullname: "",
+      username: "",
       email: "",
       password: "",
     },
     onSubmit: dataUpdate,
     validationSchema: Yup.object().shape({
-      fullname: Yup.string()
+      username: Yup.string()
         .min(2, "Mininum 2 characters")
         .max(50, "Must be 15 characters or less")
         .required("Required!"),
@@ -55,16 +55,16 @@ function Edit() {
   });
 
   async function dataUpdate() {
-    const fullname = formik.values.fullname;
+    const username = formik.values.username;
     const email = formik.values.email;
     const password = formik.values.password;
 
     const formData = new URLSearchParams();
-    formData.append("name", fullname);
+    formData.append("username", username);
     formData.append("email", email);
     formData.append("password", password);
 
-    const dataNew = await fetch("http://localhost:8888/users/" + id, {
+    const dataNew = await fetch("http://localhost:8080/users/" + id, {
       method: "PATCH",
       body: formData,
     });
@@ -93,17 +93,17 @@ function Edit() {
           <label>full name</label>
           <input
             type="text"
-            name="fullname"
+            name="username"
             onChange={formik.handleChange}
-            defaultValue={edit[0].name}
+            defaultValue={edit[0].username}
             className={
-              formik.errors.fullname && formik.touched.fullname
+              formik.errors.username && formik.touched.username
                 ? "border border-red-500 rounded-md p-[5px] block w-full rounded-md focus:text-red-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
                 : " border border-black rounded-md p-[5px] block w-full rounded-md  focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
             }
           />
-          {formik.errors.fullname && formik.touched.fullname && (
-            <p className="text-red-500">{formik.errors.fullname}</p>
+          {formik.errors.username && formik.touched.username && (
+            <p className="text-red-500">{formik.errors.username}</p>
           )}
           <label>email</label>
           <input

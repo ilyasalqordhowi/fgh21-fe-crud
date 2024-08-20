@@ -19,13 +19,13 @@ function Create() {
   const formik = useFormik({
     onSubmit: dataNew(),
     initialValues: {
-      fullname: "",
+      username: "",
       email: "",
       password: "",
     },
     onSubmit: dataNew,
     validationSchema: Yup.object().shape({
-      fullname: Yup.string()
+      username: Yup.string()
         .min(2, "Mininum 2 characters")
         .max(50, "Must be 15 characters or less")
         .required("Required!"),
@@ -37,16 +37,16 @@ function Create() {
   });
 
   async function dataNew() {
-    const fullname = formik.values.fullname;
+    const username = formik.values.username;
     const email = formik.values.email;
     const password = formik.values.password;
 
     const formData = new URLSearchParams();
-    formData.append("name", fullname);
+    formData.append("username", username);
     formData.append("email", email);
     formData.append("password", password);
 
-    const dataNew = await fetch("http://localhost:8888/users", {
+    const dataNew = await fetch("http://localhost:8888/users/", {
       method: "POST",
       body: formData,
     });
@@ -73,19 +73,19 @@ function Create() {
               <div>Back to List data</div>
             </div>
           </Link>
-          <label>full name</label>
+          <label>username</label>
           <input
             type="text"
-            name="fullname"
+            name="username"
             onChange={formik.handleChange}
             className={
-              formik.errors.fullname && formik.touched.fullname
+              formik.errors.username && formik.touched.username
                 ? "border border-red-500 rounded-md p-[5px] block w-full rounded-md focus:text-red-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
                 : " border border-black rounded-md p-[5px] block w-full rounded-md  focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
             }
           />
-          {formik.errors.fullname && formik.touched.fullname && (
-            <p className="text-red-500">{formik.errors.fullname}</p>
+          {formik.errors.username && formik.touched.username && (
+            <p className="text-red-500">{formik.errors.username}</p>
           )}
           <label>email</label>
           <input

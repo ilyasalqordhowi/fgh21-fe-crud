@@ -9,7 +9,7 @@ function Tabel() {
   useEffect(() => {
     async function newData() {
       try {
-        const response = await fetch("http://localhost:8888/users");
+        const response = await fetch("http://localhost:8888/users/");
         if (!response.ok) {
           throw new Error(`response status ${response.status}`);
         }
@@ -17,7 +17,7 @@ function Tabel() {
         const addName = json.results.map((i) => {
           return {
             id: i.id,
-            name: i.name,
+            username: i.username,
             email: i.email,
             password: i.password,
           };
@@ -30,11 +30,13 @@ function Tabel() {
     newData();
   }, []);
   async function btnDelete(id) {
-    const response = await fetch("http://localhost:8888/users/" + id, {
+    console.log(id);
+    const response = await fetch("http://localhost:8888/users" + "/" + id, {
       method: "DELETE",
     });
 
     const json = await response.json();
+    console.log(json.results);
     window.alert("terhapus");
     setData(json.results);
   }
@@ -53,7 +55,7 @@ function Tabel() {
           <thead>
             <tr className="border">
               <th className="border border-black p-[10px]">Id</th>
-              <th className="border border-black p-[10px]">Nama</th>
+              <th className="border border-black p-[10px]">Username</th>
               <th className="border border-black p-[10px]">Email</th>
               <th className="border border-black p-[10px]">Delete</th>
               <th className="border border-black p-[10px]">Edit</th>
@@ -64,7 +66,9 @@ function Tabel() {
               return (
                 <tr key={items.id}>
                   <td className="border border-black p-[10px]">{items.id}</td>
-                  <td className="border border-black p-[10px]">{items.name}</td>
+                  <td className="border border-black p-[10px]">
+                    {items.username}
+                  </td>
                   <td className="border border-black p-[10px]">
                     {items.email}
                   </td>
